@@ -1,0 +1,42 @@
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+.MuiTypography-root {
+  color: #fff !important;
+}
+
+.MuiCard-root {
+  background-color: #1c1c1c;
+  color: #fff;
+}
+
+.MuiTextField-root input {
+  color: #fff;
+}
+
+.MuiButton-containedPrimary {
+  background-color: #333;
+  color: #fff;
+}
+
+.MuiModal-root .MuiBox-root {
+  background-color: #1c1c1c;
+}
+
+.MuiInputLabel-root {
+  color: #fff !important;
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+.content {
+  padding-bottom: 56px; /* Height of the footer */
+  min-height: calc(100vh - 56px); /* Adjust based on your footer's height */
+}
