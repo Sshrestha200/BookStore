@@ -6,31 +6,39 @@ import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
 import axios from 'axios';
 
 const ContactSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
+  fullname: Yup.string().required('Name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   gender: Yup.string().required('Gender is required'),
   contact: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(10, 'Must be exactly 10 digits').required('Contact number is required'),
-  message: Yup.string().required('Message is required'),
+  address: Yup.string().required('Message is required'),
 });
 
 const Contact = () => {
-
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      // Send data to the API Gateway endpoint
-      const response = await axios.post('https://your-api-gateway-endpoint.amazonaws.com/dev/contact', values);
-
-      if (response.status === 200) {
-        alert('Your message has been sent successfully!');
-        resetForm();
-      } else {
-        alert('Failed to send your message. Please try again later.');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('An error occurred while sending your message. Please try again later.');
-    }
-  };
+    const handleSubmit = async (values, { resetForm }) => {
+        const Id = Math.floor(Math.random() * 100000);
+        values.Id = Id;
+        
+        // Log values to debug
+        console.log("Form values:", values);
+        
+        try {
+            const response = await axios.post('https://tr4qpofhdh7ua3bkjiu25iqywe0sgpqp.lambda-url.ap-southeast-2.on.aws/', values);
+            console.log("API Response:", response);
+    
+            if (response.status === 200) {
+                alert('Your message has been sent successfully!');
+                resetForm();
+            } else {
+                alert('Failed to send your message. Please try again later.');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            alert('An error occurred while sending your message. Please try again later.');
+        }
+    };
+    
+    
+      
 
   return (
     <Container>
@@ -44,7 +52,7 @@ const Contact = () => {
               If you have any questions, feel free to reach out to us. We're here to help!
             </Typography>
             <Formik
-              initialValues={{ name: '', email: '', gender: '', contact: '', message: '' }}
+              initialValues={{ fullname: '', email: '', gender: '', contact: '', address: '' }}
               validationSchema={ContactSchema}
               onSubmit={handleSubmit}
             >
@@ -53,7 +61,7 @@ const Contact = () => {
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Field
                       as={TextField}
-                      name="name"
+                      name="fullname"
                       label="Enter Full Name"
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
@@ -85,7 +93,7 @@ const Contact = () => {
                     />
                     <Field
                       as={TextField}
-                      name="message"
+                      name="address"
                       label="Enter Address"
                       error={touched.message && Boolean(errors.message)}
                       helperText={touched.message && errors.message}
