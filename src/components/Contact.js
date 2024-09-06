@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField, Button, Container, Typography, Grid, Card, CardContent, CardActions, IconButton } from '@mui/material';
+import { Box, TextField, Button, Container, Typography, Grid, Card, CardContent, CardActions, IconButton, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
@@ -10,35 +10,36 @@ const ContactSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   gender: Yup.string().required('Gender is required'),
   contact: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(10, 'Must be exactly 10 digits').required('Contact number is required'),
-  address: Yup.string().required('Message is required'),
+  address: Yup.string().required('Address is required'),
+  message: Yup.string().required('Message is required') 
 });
 
 const Contact = () => {
-    const handleSubmit = async (values, { resetForm }) => {
-        const Id = Math.floor(Math.random() * 100000);
-        values.Id = Id;
-        
-        // Log values to debug
-        console.log("Form values:", values);
-        
-        try {
-            const response = await axios.post('https://tr4qpofhdh7ua3bkjiu25iqywe0sgpqp.lambda-url.ap-southeast-2.on.aws/', values);
-            console.log("API Response:", response);
-    
-            if (response.status === 200) {
-                alert('Your message has been sent successfully!');
-                resetForm();
-            } else {
-                alert('Failed to send your message. Please try again later.');
-            }
-        } catch (error) {
-            console.error('Error sending message:', error);
-            alert('An error occurred while sending your message. Please try again later.');
+  const handleSubmit = async (values, { resetForm }) => {
+    const Id = Math.floor(Math.random() * 100000);
+    values.Id = Id;
+
+    console.log("Form values:", values);
+
+    try {
+      const response = await axios.post('https://tr4qpofhdh7ua3bkjiu25iqywe0sgpqp.lambda-url.ap-southeast-2.on.aws/', values, {
+        headers: {
+          'Content-Type': 'application/json'
         }
-    };
-    
-    
-      
+      });
+      console.log("API Response:", response);
+
+      if (response.status === 200) {
+        alert('Your message has been sent successfully!');
+        resetForm();
+      } else {
+        alert('Failed to send your message. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('An error occurred while sending your message. Please try again later.');
+    }
+  };
 
   return (
     <Container>
@@ -52,19 +53,19 @@ const Contact = () => {
               If you have any questions, feel free to reach out to us. We're here to help!
             </Typography>
             <Formik
-              initialValues={{ fullname: '', email: '', gender: '', contact: '', address: '' }}
+              initialValues={{ fullname: '', email: '', gender: '', contact: '', address: '', message: '' }}
               validationSchema={ContactSchema}
               onSubmit={handleSubmit}
             >
-              {({ errors, touched }) => (
+              {({ errors, touched, setFieldValue }) => (
                 <Form>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Field
                       as={TextField}
                       name="fullname"
                       label="Enter Full Name"
-                      error={touched.name && Boolean(errors.name)}
-                      helperText={touched.name && errors.name}
+                      error={touched.fullname && Boolean(errors.fullname)}
+                      helperText={touched.fullname && errors.fullname}
                       fullWidth
                     />
                     <Field
@@ -75,14 +76,26 @@ const Contact = () => {
                       helperText={touched.email && errors.email}
                       fullWidth
                     />
-                    <Field
-                      as={TextField}
-                      name="gender"
-                      label="Select Your Gender"
-                      error={touched.gender && Boolean(errors.gender)}
-                      helperText={touched.gender && errors.gender}
-                      fullWidth
-                    />
+
+                    <FormControl fullWidth>
+                      <InputLabel>Select Your Gender</InputLabel>
+                      <Field
+                        name="gender"
+                        as={Select}
+                        label="Select Your Gender"
+                        value={touched.gender ? touched.gender : ""}
+                        onChange={e => setFieldValue('gender', e.target.value)}
+                        error={touched.gender && Boolean(errors.gender)}
+                      >
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                        <MenuItem value="other">Other</MenuItem>
+                      </Field>
+                      {touched.gender && errors.gender ? (
+                        <Typography color="error" variant="caption">{errors.gender}</Typography>
+                      ) : null}
+                    </FormControl>
+
                     <Field
                       as={TextField}
                       name="contact"
@@ -95,10 +108,22 @@ const Contact = () => {
                       as={TextField}
                       name="address"
                       label="Enter Address"
+                      error={touched.address && Boolean(errors.address)}
+                      helperText={touched.address && errors.address}
+                      fullWidth
+                    />
+
+                    <Field
+                      as={TextField}
+                      name="message"
+                      label="Enter Your Message"
+                      multiline
+                      rows={4}
                       error={touched.message && Boolean(errors.message)}
                       helperText={touched.message && errors.message}
                       fullWidth
                     />
+
                     <Button variant="contained" type="submit" color="primary" fullWidth>
                       Submit
                     </Button>

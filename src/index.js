@@ -12,15 +12,15 @@ root.render(
     <App />
   </React.StrictMode>
 );
-AWS.config.update({
-  region: 'us-west-2', // Replace with your AWS region
-  credentials: new AWS.Credentials({
-    accessKeyId: 'YOUR_ACCESS_KEY_ID',
-    secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
-  }),
-});
+// AWS.config.update({
+//   region: 'us-west-2', 
+//   credentials: new AWS.Credentials({
+//     accessKeyId: 'YOUR_ACCESS_KEY_ID',
+//     secretAccessKey: 'jBoQZSNL0eNxp+mDj7wxBoc46Nc+Bi8CLvzdWwZu',
+//   }),
+// });
+//  this.dynamodb=new AWS.DynamoDB();
+//  this.docClient= new AWS.DynamoDB.DocumentClient();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 reportWebVitals();

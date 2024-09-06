@@ -16,5 +16,23 @@
         "bookstoredd042fa5": {}
       }
     }
+  },
+  "qa": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bookstore-qa-fdab0-authRole",
+      "UnauthRoleArn": "arn:aws:iam::127214180517:role/amplify-bookstore-qa-fdab0-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::127214180517:role/amplify-bookstore-qa-fdab0-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-bookstore-qa-fdab0-deployment",
+      "UnauthRoleName": "amplify-bookstore-qa-fdab0-unauthRole",
+      "StackName": "amplify-bookstore-qa-fdab0",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:127214180517:stack/amplify-bookstore-qa-fdab0/5fc9b870-698f-11ef-8fef-0264ace565c3",
+      "AmplifyAppId": "d21ml3kq8nh356"
+    },
+    "categories": {
+      "auth": {
+        "bookstoredd042fa5": {}
+      }
+    }
   }
 }
