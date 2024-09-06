@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField, Button, Container, Typography, Grid, Card, CardContent, CardActions, IconButton, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Box, TextField, Button, Container, Typography, Grid, Card, CardContent, IconButton, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
@@ -11,7 +11,7 @@ const ContactSchema = Yup.object().shape({
   gender: Yup.string().required('Gender is required'),
   contact: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(10, 'Must be exactly 10 digits').required('Contact number is required'),
   address: Yup.string().required('Address is required'),
-  message: Yup.string().required('Message is required') 
+  message: Yup.string().required('Message is required')
 });
 
 const Contact = () => {
@@ -57,7 +57,7 @@ const Contact = () => {
               validationSchema={ContactSchema}
               onSubmit={handleSubmit}
             >
-              {({ errors, touched, setFieldValue }) => (
+              {({ errors, touched, values, setFieldValue }) => (
                 <Form>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Field
@@ -79,21 +79,19 @@ const Contact = () => {
 
                     <FormControl fullWidth>
                       <InputLabel>Select Your Gender</InputLabel>
-                      <Field
+                      <Select
                         name="gender"
-                        as={Select}
-                        label="Select Your Gender"
-                        value={touched.gender ? touched.gender : ""}
-                        onChange={e => setFieldValue('gender', e.target.value)}
+                        value={values.gender} 
+                        onChange={e => setFieldValue('gender', e.target.value)} 
                         error={touched.gender && Boolean(errors.gender)}
                       >
                         <MenuItem value="male">Male</MenuItem>
                         <MenuItem value="female">Female</MenuItem>
                         <MenuItem value="other">Other</MenuItem>
-                      </Field>
-                      {touched.gender && errors.gender ? (
+                      </Select>
+                      {touched.gender && errors.gender && (
                         <Typography color="error" variant="caption">{errors.gender}</Typography>
-                      ) : null}
+                      )}
                     </FormControl>
 
                     <Field
@@ -113,6 +111,7 @@ const Contact = () => {
                       fullWidth
                     />
 
+                    {/* Message Text Field */}
                     <Field
                       as={TextField}
                       name="message"
